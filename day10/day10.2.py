@@ -1,6 +1,8 @@
 def GetLines():
-    file = open("day10\\entries.txt")
-    entries = file.readlines()
+    f = open("day10\\entries2.txt")
+    #f = open("day10\\input_ante.txt")
+    entries = f.readlines()
+    f.close()
     for i in range(len(entries)):
         entries[i] = int(entries[i])
     return entries
@@ -10,7 +12,7 @@ def GetCombinations(nums, index):
     if not IsValid(nums):
         return 0
     if index >= len(nums) - 1:
-        print(nums)
+        #print(nums)
         return 1
 
     combinations = 0
@@ -31,7 +33,7 @@ numbers = GetLines()
 numbers.append(max(numbers) + 3)
 numbers.append(0)
 numbers.sort()
-print(numbers)
+#print(numbers)
 lastNum = 0
 combCounter = 1
 
@@ -49,3 +51,7 @@ while i < len(numbers) - 1:
     combCounter = combCounter * combinations
     print('{}: {}'.format(nextNums, combinations))
 print(combCounter)
+
+# f = open("day10\\long_result.txt", 'w')
+# f.write(str(combCounter))
+# f.close()
