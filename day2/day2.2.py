@@ -1,37 +1,27 @@
-def GetLines():
-    file = open("day2/entries.txt")
-    entries = file.readlines()
-    return entries
+def GetPasswords():
+    with open("day2/passwords.txt") as f:
+        lines = f.readlines()
+        passwords = list()
+        for line in lines:
+            passwords.append(StringToPassword(line))
+    return passwords
 
-class PasswordModel:
-    Password = ""
-    Char = ''
-    FirstChar = ''
-    SecondChar = ''
+def StringToPassword(string):
+    strings = string.split(' ')
+    nums = strings[0].split('-')
+    password = {}
+    password['pswrd'] = strings[2].rstrip()
+    password['char'] = strings[1][0]
+    password['min'] = int(nums[0])
+    password['max'] = int(nums[1])
+    return password
 
-    def __init__(self, string):
-        strings = string.split(" ")
-        self.Password = strings[2].rstrip()
-        self.Char = strings[1][0]
-        nums = strings[0].split("-")
-        self.FirstChar = self.Password[int(nums[0])-1]
-        self.SecondChar = self.Password[int(nums[1])-1]
-        print("{}, {}, {}, {}: {}".format(self.Password, self.Char, self.FirstChar, self.SecondChar, self.IsValid()))
+def IsValidPassword(pswrd):
+    char1 = pswrd['pswrd'][pswrd['min'] - 1]
+    char2 = pswrd['pswrd'][pswrd['max'] - 1]
+    return (char1 == pswrd['char']) != (char2 == pswrd['char'])
 
-    def IsValid(self):
-        if self.FirstChar == self.Char:
-            if self.SecondChar != self.Char:
-                return True
-        else:
-            if self.SecondChar == self.Char:
-                return True
-        return False
-
-
-counter = 0
-lines = GetLines()
-for i in range(len(lines)):
-    psw = PasswordModel(lines[i])
-    if psw.IsValid() == True:
-        counter = counter + 1
-print (counter)
+if __name__ == "__main__":
+    passwords = GetPasswords()
+    validPswrds = [pswrd for pswrd in passwords if IsValidPassword(pswrd)]
+    print ('There are {} valid passwords in your input'.format(len(validPswrds)))
