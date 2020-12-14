@@ -341,3 +341,6 @@ healthchecksdb
 
 # Ignore Python venv
 AoCVenv
+
+# Ignore .vscode folder
+.vscode
