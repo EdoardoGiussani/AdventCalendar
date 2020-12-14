@@ -24,11 +24,6 @@ def ConvertEntries(entries):
 def NumToBits(num):
     binary = bin(num)[2:]
     bits = list(binary)
-    # for bit in binary:
-    #     if bit == '1':
-    #         bits.append(1)
-    #     else:
-    #         bits.append(0)
     while len(bits) < 36:
         bits.insert(0, '0')
     return bits

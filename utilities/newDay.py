@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 if __name__ == "__main__":
-    print('Select day for part two or leave blank for today:')
+    print('Select the new day or leave blank for today:')
     day = input()
     if day == '':
         day = date.today().strftime('%d')
