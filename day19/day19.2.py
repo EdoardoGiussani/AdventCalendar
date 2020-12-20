@@ -36,19 +36,21 @@ def SolveRule(message, messageIndex, rules, ruleIndex):
             messageIndex = startingMessageIndex
             for index in subRule:
                 valid, messageIndex = SolveRule(message, messageIndex, rules, index)
+                messageIndex += 1
                 if not valid:
                     break
-                messageIndex += 1
                 if messageIndex == len(message):
-                    break
+                    if subRule.index(index) + 1 == len(subRule):
+                        break
+                    else:
+                        valid = False
+                        break
             if valid:
                 return True, messageIndex - 1
     return False, startingMessageIndex
     
 def IsValidMessage(message, rules):
-    messageIndex = 0
-    ruleIndex = 0
-    valid, messageIndex = SolveRule(message, messageIndex, rules, ruleIndex)
+    valid, messageIndex = SolveRule(message, 0, rules, 0)
     return valid and messageIndex == len(message) - 1
 
 if __name__ == "__main__":
