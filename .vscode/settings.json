@@ -1,5 +1,7 @@
 {
     "python.venvFolders": [
+        "C:\\Users\\Edoardo\\myThings\\projects\\AdventCalendar\\AoC\\Scripts\\activate.bat",
         "C:\\Users\\Edoardo\\myThings\\projects\\AdventCalendar\\AoCVenv\\Scripts\\activate.bat"
-    ]
+    ],
+    "python.pythonPath": "AoC\\Scripts\\python.exe"
 }

@@ -8,52 +8,39 @@ def GetLines():
         image.append(line.strip())
     return image
 
-def GetColumn(tile, column):
+def GetColumn(image, column):
     border = ''
-    for i in range(len(tile)):
-        border += tile[i][column]
+    for i in range(len(image)):
+        border += image[i][column]
     return list(border)
 
-
-def FindMonster_old(image):
+def SearchForMonster(image, i):
     monsters = 0
-    i = 1
-    monsterHead =   '..................#.'
-    monsterMiddle = '#....##....##....###'
-    monsterLow =    '.#..#..#..#..#..#...'
-    while i < len(image) - 1:
-        headMatches = re.findall(monsterHead, image[i - 1])
-        middleMatches = re.findall(monsterMiddle, image[i])
-        lowMatches = re.findall(monsterLow, image[i + 1])
-        if headMatches and middleMatches and lowMatches:
-            for midMatch in middleMatches:
-                midIndex = ''.join(image[i]).find(midMatch)
-                for lowMatch in lowMatches:
-                    lowIndex = ''.join(image[i + 1]).find(lowMatch)
-                    if lowIndex == midIndex:
-                        if image[i - 1][midIndex + 19] == '#':
-                            monsters += 1
-        i += 1
+    headLine = image[i - 1]
+    bodyLine = image[i]
+    bottomLine = image[i + 1]
+    
+    head = (18, 18)
+    body = (0,5,6,11,12,17,18,19)
+    bottom = (1,4,7,10,13,16)
+
+    for i in range(len(bodyLine) - 20):
+        if SearchMonsterPart(bodyLine[i:], body):
+            if SearchMonsterPart(bottomLine[i:], bottom):
+                if SearchMonsterPart(headLine[i:], head):
+                    monsters += 1
     return monsters
 
+def SearchMonsterPart(line, part):
+    for pos in part:
+        if not line[pos] == '#':
+            return False
+    return True
 
 def FindMonster(image):
     monsters = 0
-    i = 1
-    monsterMiddle = re.compile('#....##....##....###')
-    monsterLow =    re.compile('.#..#..#..#..#..#...')
-    while i < len(image) - 1:
-        middleMatches = monsterMiddle.finditer(image[i])
-        lowMatches = monsterLow.finditer(image[i + 1])
-        for midMatch in middleMatches:
-            # print(midMatch.start())
-            for lowMatch in lowMatches:
-                # print(lowMatch.start())
-                if midMatch.start() == lowMatch.start():
-                    if image[i - 1][lowMatch.start() + 1] == '#':
-                        print('line: {}, index: {}'.format(i, lowMatch.start()))
-                        monsters += 1
-        i += 1
+    for i in range(len(image) - 1):
+        monsters += SearchForMonster(image, i)
     return monsters
 
 def RotateImage(image):
@@ -90,24 +77,24 @@ def AnalyzeImage(image):
     while i < 3:
         PrintTile(image)
         monsters += FindMonster(image)
-        # if monsters != 0:
-        #     break
+        if monsters != 0:
+            break
 
         image = FlipImage(image, True)
         PrintTile(image)
         monsters += FindMonster(image)
-        # if monsters != 0:
-        #     break
+        if monsters != 0:
+            break
         image = FlipImage(image, False)
         PrintTile(image)
         monsters += FindMonster(image)
-        # if monsters != 0:
-        #     break
+        if monsters != 0:
+            break
         image = FlipImage(image, True)
         PrintTile(image)
         monsters += FindMonster(image)
-        # if monsters != 0:
-        #     break
+        if monsters != 0:
+            break
 
         image = FlipImage(image, False)
         image = RotateImage(image)
